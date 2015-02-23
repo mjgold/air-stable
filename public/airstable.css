@@ -1,0 +1,4 @@
+[placeholder]:focus::-webkit-input-placeholder {
+  transition: opacity 0.25s 0.25s ease;
+  opacity: 0;
+}
