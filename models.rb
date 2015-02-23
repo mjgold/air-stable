@@ -2,7 +2,7 @@ require 'rubygems'
 require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, 'sqlite://airstable.db')
+DataMapper.setup(:default, 'sqlite:airstable.db')
 
 # A User can be an owner or requester
 class User
@@ -28,7 +28,7 @@ class Stall
   property :state, String, required: true
   property :zip, String, required: true
 
-  belongs_to :owner, 'User'
+  belongs_to :owner, 'User', required: true
   has n, :rental_request
 end
 
@@ -37,12 +37,12 @@ class RentalRequest
   include DataMapper::Resource
 
   property :id, Serial
-  property :status, String, required: true
+  property :status, Enum[:accepted, :pending, :declined], required: true
   property :message, Text
   property :date, DateTime
 
-  belongs_to :owner, 'User'
-  belongs_to :requester, 'User'
+  belongs_to :owner, 'User', required: true
+  belongs_to :requester, 'User', required: true
 end
 
 DataMapper.finalize
