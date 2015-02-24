@@ -1,5 +1,41 @@
 <%= erb :_header %>
 
-Test
+<h1>Create an Account</h1>
+<p>
+
+<% if user.errors.any? %>
+  <div class='form-errors'>
+    <h3>Please fix these errors: </h3>
+    <ul class='error-messages'>
+      <% user.errors.full_messages.each do |error_msg| %>
+        <li><%= error_msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<form id='create-account-form' action='/users/new' method='post'>
+  Username
+  <br>
+  <input type='text' name='user[username]' placeholder='MisterEd'>
+  <p/>
+
+  Email address
+  <br>
+  <input type='text' name='user[email]' placeholder='yourname@domain.com'>
+  <p/>
+
+  Password
+  <br>
+  <input type='text' name='user[password]' placeholder='Minimum 6 characters'>
+  <p/>
+
+  Confirm password
+  <br>
+  <input type='text' name='user[password_confirmation]' placeholder=''>
+  <p/>
+  <button type='submit'>Create</button>
+</form>
+<p>
 
 <%= erb :_footer %>

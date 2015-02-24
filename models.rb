@@ -1,20 +1,40 @@
 require 'rubygems'
 require 'data_mapper'
 
-DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, 'sqlite:airstable.db')
-
 # A User can be an owner or requester
 class User
   include DataMapper::Resource
 
   property :id, Serial
-  property :nickname, String, required: true
-  property :email, String, required: true, unique: true
-  property :password, String, required: true
+
+  property :username, String, required: true
+
+  property :email, String,
+    format: :email_address,
+    required: true,
+    unique: true,
+    messages: {
+      format: 'You must enter a valid email address.'
+    }
+
+  property :password, BCryptHash,
+    required: true
+
+  attr_accessor :password_confirmation
+  validates_confirmation_of :password
+  validates_length_of :password, min: 6
+  validates_length_of :password_confirmation, min: 6
 
   has n, :stalls
   has n, :rental_requests
+
+  def valid_password?(unhashed_password)
+    password == unhashed_password
+  end
+
+  def self.find_by_email(email)
+    first(email: email)
+  end
 end
 
 # Represents a horse stall that can be requested
