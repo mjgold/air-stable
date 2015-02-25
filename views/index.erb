@@ -2,15 +2,19 @@
 
 <h1>Air Stable</h1>
 <h2>Share a "Neigh"-borly stable!</h2>
+
 <p>
-<form action='' method='post'>
-  <input type='text' name='email' placeholder='Email address'>
+<%= erb :_show_errors, locals: { user: user } %>
+
+<p>
+<form action='/sessions' method='post'>
+  <input type='text' name='email' value='<%= user[:email] %>' placeholder='Email address'>
   <p/>
   <input type='text' name='password' placeholder='Password'>
   <p/>
   <button type='submit'>Log in</button>
 </form>
 <p>
-Not a member? <a href='users/new'>Register now!</a>
+Not a member? <a href='/users/new'>Register now!</a>
 
 <%= erb :_footer %>

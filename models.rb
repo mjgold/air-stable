@@ -32,8 +32,13 @@ class User
     password == unhashed_password
   end
 
-  def self.find_by_email(email)
-    first(email: email)
+  def self.find_by_credentials(email, password)
+    user = User.first(email: email) || User.new(email: email)
+    unless user.valid_password?(password)
+      user.errors.add(:general, "We couldn't find an account with that email \
+        and password. Can you double-check them?")
+    end
+    user
   end
 end
 

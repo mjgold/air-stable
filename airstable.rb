@@ -3,13 +3,18 @@ require './setup'
 require './models'
 
 get '/' do
-  erb :index, locals: { title: 'Home' }
+  user = User.new
+  erb :index, locals: { user: user, title: 'Home' }
 end
 
-post '/' do
-  # check login credentials
-  # send to user home page if valid
-  # else send back to login with error
+post '/sessions' do
+  user = User.find_by_credentials(params[:email], params[:password])
+  if user.errors.any?
+    erb :index, locals: { user: user, title: 'Home' }
+  else
+    sign_in!(user)
+    redirect('/home/#{user.id}')
+  end
 end
 
 get '/users/new' do
