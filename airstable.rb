@@ -8,6 +8,9 @@ require './setup'
 require './models'
 require 'PP'
 
+set(:sessions, true)
+set(:session_secret, ENV['SESSION_SECRET'])
+
 get '/' do
   user = User.new
   erb :index, locals: { user: user, title: 'Home' }
@@ -15,6 +18,7 @@ end
 
 post '/sessions' do
   user = User.find_by_credentials(params[:email], params[:password])
+
   if user.errors.any?
     erb :index, locals: { user: user, title: 'Home' }
   else
@@ -54,7 +58,6 @@ get '/home/:id' do
   # display dashboard for logged in user
 end
 
-### HOW TO USE current_user as a local?
 get '/stalls/new' do
   stall = Stall.new
 
@@ -119,25 +122,20 @@ delete '/request/:id' do
   # delete a rental request
 end
 
-set(:sessions, true)
-set(:session_secret, ENV['SESSION_SECRET'])
-
 helpers do
-  def title(page_title)
-    return 'Air Stable' if page_title.nil?
-    "#{page_title} | Air Stable"
-  end
-
   def current_user
-    ### WTF
     PP.pp session
-    PP.pp session.has_key(:user_id)
-    return nil unless session.key(:user_id)
+    # Return nil if no user is logged in
+    return nil unless session.key?(:user_id)
 
+    # If @current_user is undefined, define it by
+    # fetching it from the database.
     @current_user ||= User.get(session[:user_id])
   end
 
   def user_signed_in?
+    # A user is signed in if the current_user method
+    # returns something other than nil
     !current_user.nil?
   end
 
@@ -153,5 +151,10 @@ helpers do
 
   def create_or_edit_text(object)
     object.new? ? 'Create' : 'Edit'
+  end
+
+  def title(page_title)
+    return 'Air Stable' if page_title.nil?
+    "#{page_title} | Air Stable"
   end
 end
