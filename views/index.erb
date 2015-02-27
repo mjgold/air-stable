@@ -1,10 +1,4 @@
-<%= erb :_header %>
-
-<h1>Air Stable</h1>
-<h2>Share a "Neigh"-borly stable!</h2>
-
-<p>
-<%= erb :_show_errors, locals: { user: user } %>
+<%= erb :_header, locals: { object: user } %>
 
 <p>
 <form action='/sessions' method='post'>

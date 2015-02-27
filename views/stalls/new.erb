@@ -1,0 +1,9 @@
+<%= erb :_header, locals: { object: stall } %>
+
+<form id='stall' action='/stalls' method='post'>
+
+<%= erb :'stalls/_stall_form', locals: { stall: stall } %>
+
+</form>
+
+<%= erb :_footer %>

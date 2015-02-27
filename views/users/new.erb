@@ -1,19 +1,17 @@
-<%= erb :_header %>
+<%= erb :_header, locals: { object: user } %>
 
-<h1>Create an Account</h1>
+<h2>Create an Account</h2>
 <p>
-
-<%= erb :_show_errors, locals: { user: user } %>
 
 <form id='create-account-form' action='/users/new' method='post'>
   Username
   <br>
-  <input type='text' name='user[username]' placeholder='MisterEd'>
+  <input type='text' name='user[username]' value='<%= user[:username] %>' placeholder='MisterEd'>
   <p/>
 
   Email address
   <br>
-  <input type='text' name='user[email]' placeholder='yourname@domain.com'>
+  <input type='text' name='user[email]' value='<%= user[:email] %>' placeholder='yourname@domain.com'>
   <p/>
 
   Password

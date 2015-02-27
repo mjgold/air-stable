@@ -6,9 +6,7 @@ class User
   include DataMapper::Resource
 
   property :id, Serial
-
   property :username, String, required: true
-
   property :email, String,
     format: :email_address,
     required: true,
@@ -25,7 +23,7 @@ class User
   validates_length_of :password, min: 6
   validates_length_of :password_confirmation, min: 6
 
-  has n, :stalls
+  has n, :stalls, child_key: [:owner_id]
   has n, :rental_requests
 
   def valid_password?(unhashed_password)
@@ -53,7 +51,9 @@ class Stall
   property :state, String, required: true
   property :zip, String, required: true
 
-  belongs_to :owner, 'User', required: true
+  belongs_to :owner, 'User',
+    child_key: [:owner_id],
+    required: true
   has n, :rental_request
 end
 

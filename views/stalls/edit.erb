@@ -1,0 +1,10 @@
+<%= erb :_header, locals: { object: user } %>
+
+<form id='stall' action='<%= "/stalls/#{stall.id}" %>' method='post'>
+
+<%= erb :'stalls/_stall_form', locals: { stall: stall } %>
+
+<input type='hidden' name='_method' value='put'>
+</form>
+
+<%= erb :_footer %>

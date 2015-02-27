@@ -1,6 +1,12 @@
+# Why does rerun sometimes not work?
+# Why is my Airstable calling a route that it shouldn't?
+# How to use current user in routes instead of passing user as local?
+#   Should I just use user instance variable?
+
 require 'sinatra'
 require './setup'
 require './models'
+require 'PP'
 
 get '/' do
   user = User.new
@@ -13,7 +19,7 @@ post '/sessions' do
     erb :index, locals: { user: user, title: 'Home' }
   else
     sign_in!(user)
-    redirect('/home/#{user.id}')
+    redirect("/home/#{user.id}")
   end
 end
 
@@ -27,38 +33,70 @@ post '/users/new' do
 
   if user.saved?
     sign_in!(user)
-    redirect('/')
+    redirect("/home/#{user.id}")
   else
-    erb :'/users/new', locals: { user: user }
+    erb :'/users/new', locals: { object: user }
   end
 end
 
+get '/users/:id/edit' do
+  # Render edit user
+end
+
+post '/users/:id' do
+  # Process edit user
+end
+
 get '/home/:id' do
+  user = User.get(session[:user_id])
+
+  erb :'/home', locals: { user: user, title: 'My Dashboard' }
   # display dashboard for logged in user
 end
 
-get '/stall/:id' do
-  # get a specific stall page
+### HOW TO USE current_user as a local?
+get '/stalls/new' do
+  stall = Stall.new
+
+  erb :'/stalls/new', locals: { stall: stall, title: 'Create a Stall' }
+end
+
+get '/stalls/:id' do
+  stall = Stall.get(params[:id])
+
+  erb :'/stalls/show', locals: { stall: stall, title: "#{stall.title}" }
 end
 
 get '/stalls' do
   # display stall search page
 end
 
-get '/stalls/new' do
-  # create a stall page
-end
+post '/stalls' do
+  stall = Stall.create(params[:stall])
+  puts "got here"
+  PP.pp stall
 
-post '/stalls/new' do
-  # create a stall
+  if stall.saved?
+    redirect("/stalls/#{stall.id}")
+  else
+    erb :'/stalls/new', locals: { stall: stall }
+  end
 end
 
 get '/stalls/:id/edit' do
-  # edit stall page
+  stall = Stall.get(params[:id])
+
+  erb :'/stalls/edit', locals: { stall: stall, title: "Edit #{stall.title}" }
 end
 
 put '/stalls/:id' do
-  # edit stall page
+  stall = Stall.create(params[:stall])
+
+  if stall.saved?
+    redirect("/stalls/#{stall.id}")
+  else
+    erb :'/stalls/new', locals: { stall: stall }
+  end
 end
 
 get '/requests/new' do
@@ -91,7 +129,9 @@ helpers do
   end
 
   def current_user
-    ### I DON'T UNDERSTAND WHY THIS WORKS
+    ### WTF
+    PP.pp session
+    PP.pp session.has_key(:user_id)
     return nil unless session.key(:user_id)
 
     @current_user ||= User.get(session[:user_id])
@@ -109,5 +149,9 @@ helpers do
   def sign_out!
     @current_user = nil
     session.delete(:user_id)
+  end
+
+  def create_or_edit_text(object)
+    object.new? ? 'Create' : 'Edit'
   end
 end

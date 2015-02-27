@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
+gem 'rack', '~> 1.4', '< 1.6'
 gem 'data_mapper'
 gem 'bcrypt'
 
