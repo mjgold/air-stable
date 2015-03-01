@@ -1,4 +1,4 @@
-<%= erb :_header, locals: { object: stall } %>
+<%= erb :_header, locals: { title: title, object: stall } %>
 
 <!- Should remove these formatting tags and use CSS instead ->
 <h2><%= stall.title %></h2>
@@ -7,6 +7,7 @@
 
 <p><%= stall.description %>
 
-<p><button href='/requests/new'>Request Rental</button>
+<p><button><a href='/requests/new'>Request Rental</a></button>
+  <button><a href='<%="/stalls/#{stall.id}/edit" %>'>Edit Stall</a></button>
 
 <%= erb :_footer %>

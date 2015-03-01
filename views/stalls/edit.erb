@@ -1,4 +1,4 @@
-<%= erb :_header, locals: { object: stall } %>
+<%= erb :_header, locals: { title: title, object: stall } %>
 
 <form id='stall' action='<%= "/stalls/#{stall.id}" %>' method='post'>
 

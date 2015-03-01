@@ -4,8 +4,10 @@
 
 <p>
 <% stalls.each do |stall| %>
-  <%= stall.title %>
-  <br><%= city_state_zip(stall) %>
+  <a href='<%="/stalls/#{stall.id}"%>'>
+  <%=stall.title%></a>
+  <br/><%= city_state_zip(stall) %>
+  <p/>
 <% end %>
 
 <%= erb :_footer %>
