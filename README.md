@@ -3,15 +3,14 @@
 You have a horse. You want to travel with your horse; but all the commercial
 stables are absurdly expensive. Whatever do you do?!
 
-Enter AirStable! AirStable lets people with extra stalls in their stable rent
-stalls to horses on the go!
+Enter AirStable! AirStable lets people with extra stalls in their stable rent stalls to horses on the go!
 
 ## Functional Requirements
 
-1. Guest may register as a `User`
-1. Guest may log in
-1. `User` may create a Stall
-1. `User` may see a list of available `Stall`s
+x. Guest may register as a `User`
+x. Guest may log in
+x `User` may create a Stall
+x. `User` may see a list of available `Stall`s
 1. `User` may create a pending `RentalRequest` for a `Stall`
 1. `Stall` owner may see pending `RentalRequest`s
 1. `RentalRequest`s requester may see pending `RentalRequest`s

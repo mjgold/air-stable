@@ -1,4 +1,5 @@
-<%= erb :_header, locals: { object: user } %>
+<%= puts "title:  #{title}" %>
+<%= erb :_header, locals: { object: user, title: title } %>
 
 <p>
 <form action='/sessions' method='post'>
@@ -11,4 +12,4 @@
 <p>
 Not a member? <a href='/users/new'>Register now!</a>
 
-<%= erb :_footer %>
+<%= erb :_footer, locals: { external_page: true } %>

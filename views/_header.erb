@@ -1,13 +1,13 @@
 <!DOCTYPE HTML SYSTEM>
 <html>
 <head>
-  <title><%= title(locals[:title]) %></title>
+  <title><%= title_text(title) %></title>
   <link rel="stylesheet" type="text/css" href="/airstable.css">
 </head>
 <body>
   <h2>Air Stable</h2>
 
-  <% if object.errors.any? %>
+  <% if object && object.errors.any? %>
     <div class='form-errors'>
       <h3>Whoa, something's up: </h3>
       <ul class='error-messages'>

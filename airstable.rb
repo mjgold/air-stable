@@ -11,9 +11,21 @@ require 'PP'
 set(:sessions, true)
 set(:session_secret, ENV['SESSION_SECRET'])
 
+# set(:requires_login) do
+#   condition do
+#     redirect '/' unless user_signed_in?
+#   end
+#   true
+# end
+
 get '/' do
   user = User.new
   erb :index, locals: { user: user, title: 'Home' }
+end
+
+get '/sessions/sign_out' do
+  sign_out!
+  redirect('/')
 end
 
 post '/sessions' do
@@ -23,7 +35,7 @@ post '/sessions' do
     erb :index, locals: { user: user, title: 'Home' }
   else
     sign_in!(user)
-    redirect("/home/#{user.id}")
+    redirect('/stalls')
   end
 end
 
@@ -51,11 +63,18 @@ post '/users/:id' do
   # Process edit user
 end
 
-get '/home/:id' do
-  user = User.get(session[:user_id])
+get '/dashboard', requires_login: true do
+  if user = current_user
+    erb :'/dashboard', locals: { user: user, title: 'My Dashboard' }
+  else
+    redirect '/'
+  end
+end
 
-  erb :'/home', locals: { user: user, title: 'My Dashboard' }
-  # display dashboard for logged in user
+get '/stalls' do
+  stalls = Stall.all
+
+  erb :'/stalls/index', locals: { stalls: stalls, title: 'All Stalls' }
 end
 
 get '/stalls/new' do
@@ -70,14 +89,8 @@ get '/stalls/:id' do
   erb :'/stalls/show', locals: { stall: stall, title: "#{stall.title}" }
 end
 
-get '/stalls' do
-  # display stall search page
-end
-
 post '/stalls' do
   stall = Stall.create(params[:stall])
-  puts "got here"
-  PP.pp stall
 
   if stall.saved?
     redirect("/stalls/#{stall.id}")
@@ -93,12 +106,18 @@ get '/stalls/:id/edit' do
 end
 
 put '/stalls/:id' do
-  stall = Stall.create(params[:stall])
+  stall = Stall.get(params[:id])
+  stall.attributes = params[:stall] if params[:stall]
+  stall.save
 
+  puts "Stall dirty?: #{stall.dirty?}"
   if stall.saved?
+    PP.pp params[:stall]
+    PP.pp stall.attributes
+    puts "Stall saved?: #{stall.saved?}"
     redirect("/stalls/#{stall.id}")
   else
-    erb :'/stalls/new', locals: { stall: stall }
+    erb :'/stalls/new', locals: { object: stall }
   end
 end
 
@@ -124,7 +143,6 @@ end
 
 helpers do
   def current_user
-    PP.pp session
     # Return nil if no user is logged in
     return nil unless session.key?(:user_id)
 
@@ -153,8 +171,12 @@ helpers do
     object.new? ? 'Create' : 'Edit'
   end
 
-  def title(page_title)
+  def title_text(page_title)
     return 'Air Stable' if page_title.nil?
     "#{page_title} | Air Stable"
+  end
+
+  def city_state_zip(stall)
+    "#{stall.city}, #{stall.state} #{stall.zip}"
   end
 end

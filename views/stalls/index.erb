@@ -1,0 +1,11 @@
+<%= erb :_header, locals: { object: nil } %>
+
+# place search bar
+
+<p>
+<% stalls.each do |stall| %>
+  <%= stall.title %>
+  <br><%= city_state_zip(stall) %>
+<% end %>
+
+<%= erb :_footer %>

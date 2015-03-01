@@ -3,11 +3,10 @@
 <!- Should remove these formatting tags and use CSS instead ->
 <h2><%= stall.title %></h2>
 
-<h3><i><%= stall.city %>, <%= stall.state %> - <%= stall.zip %></i></h3>
-<h3>Listed by <%= stall.owner.username %>
+<i><%= city_state_zip(stall) %></i> - hosted by <%= stall.owner.username %>
 
-<h4><%= stall.description %></h4>
+<p><%= stall.description %>
 
-<button href='/requests/new'>Request to rent</button>
+<p><button href='/requests/new'>Request Rental</button>
 
 <%= erb :_footer %>
