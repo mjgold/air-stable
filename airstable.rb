@@ -1,7 +1,4 @@
 # Why does rerun sometimes not work?
-# Why is my Airstable calling a route that it shouldn't?
-# How to use current user in routes instead of passing user as local?
-#   Should I just use user instance variable?
 
 require 'sinatra'
 require './setup'
@@ -35,13 +32,13 @@ post '/sessions' do
     erb :index, locals: { user: user, title: 'Home' }
   else
     sign_in!(user)
-    redirect('/stalls')
+    redirect('/dashboard')
   end
 end
 
 get '/users/new' do
   user = User.new
-  erb :'/users/new', locals: { user: user, title: 'Create Account' }
+  erb :'/users/new', locals: { user: user, title: 'Create an Account' }
 end
 
 post '/users/new' do
@@ -49,7 +46,7 @@ post '/users/new' do
 
   if user.saved?
     sign_in!(user)
-    redirect("/home/#{user.id}")
+    redirect("/dashboard")
   else
     erb :'/users/new', locals: { object: user }
   end
@@ -63,8 +60,9 @@ post '/users/:id' do
   # Process edit user
 end
 
-get '/dashboard', requires_login: true do
-  if user = current_user
+get '/dashboard' do
+  user = current_user
+  if user
     erb :'/dashboard', locals: { user: user, title: 'My Dashboard' }
   else
     redirect '/'
