@@ -48,7 +48,7 @@ post '/users/new' do
     sign_in!(user)
     redirect("/dashboard")
   else
-    erb :'/users/new', locals: { object: user }
+    erb :'/users/new', locals: { user: user }
   end
 end
 
@@ -110,32 +110,33 @@ put '/stalls/:id' do
 
   puts "Stall dirty?: #{stall.dirty?}"
   if stall.saved?
-    PP.pp params[:stall]
-    PP.pp stall.attributes
     puts "Stall saved?: #{stall.saved?}"
     redirect("/stalls/#{stall.id}")
   else
-    erb :'/stalls/new', locals: { object: stall }
+    erb :'/stalls/new', locals: { stall: stall }
   end
 end
 
-get '/requests/new' do
-  # request a stall page
-end
-
-post '/requests/new' do
-  # create a rental request
-end
-
-post '/requests/:id/edit' do
-  # approve or reject a request
-end
-
-delete '/stall/:id' do
+delete '/stalls/:id' do
   # delete a stall (cancel any pending or accepted requests)
 end
 
-delete '/request/:id' do
+get '/stalls/:id/rental_requests/new' do
+  stall = Stall.get(params[:id])
+
+  erb :'/stalls/rental_requests/new', \
+      locals: { title: "Request #{stall.title}", stall: stall }
+end
+
+post '/stalls/:id/rental_requests' do
+  # create a rental request
+end
+
+put '/stalls/:id/rental_requests/:id/edit' do
+  # approve or reject a request
+end
+
+delete '/stalls/:id/rental_requests/:id' do
   # delete a rental request
 end
 
@@ -172,6 +173,14 @@ helpers do
   def title_text(page_title)
     return 'Air Stable' if page_title.nil?
     "#{page_title} | Air Stable"
+  end
+
+  def stall_info(stall)
+    <<-STALL
+    <h2>#{stall.title}</h2>
+
+    <i>#{city_state_zip(stall)}</i> - hosted by #{stall.owner.username}
+    STALL
   end
 
   def city_state_zip(stall)

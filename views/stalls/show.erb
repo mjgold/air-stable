@@ -1,13 +1,10 @@
 <%= erb :_header, locals: { title: title, object: stall } %>
 
-<!- Should remove these formatting tags and use CSS instead ->
-<h2><%= stall.title %></h2>
-
-<i><%= city_state_zip(stall) %></i> - hosted by <%= stall.owner.username %>
+<%= stall_info(stall) %>
 
 <p><%= stall.description %>
 
-<p><button><a href='/requests/new'>Request Rental</a></button>
+<p><button><a href='/stalls/<%="#{stall.id}"%>/rental_requests/new'>Request Rental</a></button>
   <button><a href='<%="/stalls/#{stall.id}/edit" %>'>Edit Stall</a></button>
 
 <%= erb :_footer %>

@@ -1,0 +1,18 @@
+<%= erb :_header, locals: { title: title, object: stall } %>
+
+<%= stall_info(stall) %>
+
+<p>
+<form action='/stalls/<%="#{stall.id}"%>/rental_requests' method='post'>
+Date to Reserve:
+<input type='text' name='rental_request[:date]'>
+
+<p>
+Message to <%= stall.owner.username %>:
+<textarea name='rental_request[:message]'></textarea>
+
+<p>
+<button type=submit>Send Request!</button>
+</form>
+
+<%= erb :_footer %>

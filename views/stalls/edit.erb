@@ -1,6 +1,6 @@
 <%= erb :_header, locals: { title: title, object: stall } %>
 
-<form id='stall' action='<%= "/stalls/#{stall.id}" %>' method='post'>
+<form id='stall' action='<%="/stalls/#{stall.id}"%>' method='post'>
 
 <%= erb :'stalls/_stall_form', locals: { stall: stall } %>
 
