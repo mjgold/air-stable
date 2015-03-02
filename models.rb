@@ -8,15 +8,15 @@ class User
   property :id, Serial
   property :username, String, required: true
   property :email, String,
-    format: :email_address,
-    required: true,
-    unique: true,
-    messages: {
-      format: 'You must enter a valid email address.'
-    }
+           format: :email_address,
+           required: true,
+           unique: true,
+           messages: {
+             format: 'You must enter a valid email address.'
+           }
 
   property :password, BCryptHash,
-    required: true
+           required: true
 
   attr_accessor :password_confirmation
   validates_confirmation_of :password
@@ -24,7 +24,7 @@ class User
   validates_length_of :password_confirmation, min: 6
 
   has n, :stalls, child_key: [:owner_id]
-  has n, :rental_requests
+  has n, :rental_requests, child_key: [:requester_id]
 
   def valid_password?(unhashed_password)
     password == unhashed_password
@@ -52,9 +52,9 @@ class Stall
   property :zip, String, required: true
 
   belongs_to :owner, 'User',
-    child_key: [:owner_id],
-    required: true
-  has n, :rental_request
+             child_key: [:owner_id],
+             required: true
+  has n, :rental_requests
 end
 
 # Represents a user's request of an owner's stall
@@ -62,12 +62,16 @@ class RentalRequest
   include DataMapper::Resource
 
   property :id, Serial
-  property :status, Enum[:accepted, :pending, :declined], required: true
   property :message, Text
-  property :date, DateTime
+  property :date, Date
+  property :status, Enum[:accepted, :pending, :declined], required: true
 
-  belongs_to :owner, 'User', required: true
-  belongs_to :requester, 'User', required: true
+  belongs_to :stall, 'Stall',
+             required: true
+
+  belongs_to :requester, 'User',
+             child_key: [:requester_id],
+             required: true
 end
 
 DataMapper.finalize

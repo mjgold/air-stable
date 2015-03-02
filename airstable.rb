@@ -118,7 +118,7 @@ post '/stalls' do
   if stall.saved?
     redirect("/stalls/#{stall.id}")
   else
-    erb :'/stalls/new', locals: { stall: stall }
+    erb :'/stalls/new', locals: { stall: stall, title: 'Create a Stall' }
   end
 end
 
@@ -154,7 +154,25 @@ get '/stalls/:id/rental_requests/new' do
 end
 
 post '/stalls/:id/rental_requests' do
-  # create a rental request
+  PP.pp params
+  stall = Stall.get(params[:id])
+
+  rental_request = RentalRequest.new(params[:rental_request])
+  rental_request.status = :pending
+  rental_request.stall = stall
+  rental_request.requester = current_user
+  rental_request.save
+
+  puts "Rental request valid?: #{rental_request.valid?}"
+  if rental_request.saved?
+    flash_set(:notice, 'Rental request created!')
+    redirect '/dashboard'
+  else
+    PP.pp rental_request
+    PP.pp rental_request.errors
+    erb :"/stalls/rental_requests/new", \
+        locals: { title: "Request #{stall.title}", stall: stall, rental_request: rental_request }
+  end
 end
 
 put '/stalls/:id/rental_requests/:id/edit' do

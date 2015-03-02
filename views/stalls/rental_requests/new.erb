@@ -5,11 +5,11 @@
 <p>
 <form action='/stalls/<%="#{stall.id}"%>/rental_requests' method='post'>
 Date to Reserve:
-<input type='text' name='rental_request[:date]'>
+<input type='text' name='rental_request[date]'>
 
 <p>
 Message to <%= stall.owner.username %>:
-<textarea name='rental_request[:message]'></textarea>
+<textarea name='rental_request[message]'></textarea>
 
 <p>
 <button type=submit>Send Request!</button>
