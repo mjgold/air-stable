@@ -17,3 +17,9 @@
       </ul>
     </div>
   <% end %>
+
+  <% if notice = get_flash(:notice) %>
+    <div id="flash-notice">
+      <%= notice %>
+    </div>
+  <% end %>

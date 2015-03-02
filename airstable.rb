@@ -1,4 +1,4 @@
-# Why does rerun sometimes not work?
+### More elegant way to do authorization?
 
 require 'sinatra'
 require './setup'
@@ -18,9 +18,10 @@ set(:session_secret, ENV['SESSION_SECRET'])
 # Before filter that redirects user to login page unless user is logged in
 # or page does not require login
 
+### This eliminates the possibility of a 404 page. Better way to redirect only
+### for valid routes?
 before do
   request_path = request.path_info.split('/')
-  PP.pp request_path
 
   if (['sessions', nil].include? request_path[1]) ||
      (request_path[1] == 'users' && request_path[2] == 'new')
@@ -28,6 +29,15 @@ before do
   else
     authorize!
   end
+end
+
+def get_flash(key)
+  session[:flash].delete(key) if session[:flash]
+end
+
+def set_flash(key, value)
+  session[:flash] ||= {}
+  session[:flash][key] = value
 end
 
 get '/' do
@@ -182,7 +192,10 @@ helpers do
   end
 
   def authorize!
-    redirect '/' unless user_signed_in?
+    if !user_signed_in?
+      set_flash(:notice, 'Please login to access that page.')
+      redirect '/'
+    end
   end
 
   def create_or_edit_text(object)
