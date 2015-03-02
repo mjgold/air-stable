@@ -15,6 +15,21 @@ set(:session_secret, ENV['SESSION_SECRET'])
 #   true
 # end
 
+# Before filter that redirects user to login page unless user is logged in
+# or page does not require login
+
+before do
+  request_path = request.path_info.split('/')
+  PP.pp request_path
+
+  if (['sessions', nil].include? request_path[1]) ||
+     (request_path[1] == 'users' && request_path[2] == 'new')
+    pass
+  else
+    authorize!
+  end
+end
+
 get '/' do
   user = User.new
   erb :index, locals: { user: user, title: 'Home' }
@@ -46,7 +61,7 @@ post '/users/new' do
 
   if user.saved?
     sign_in!(user)
-    redirect("/dashboard")
+    redirect('/dashboard')
   else
     erb :'/users/new', locals: { user: user }
   end
@@ -164,6 +179,10 @@ helpers do
   def sign_out!
     @current_user = nil
     session.delete(:user_id)
+  end
+
+  def authorize!
+    redirect '/' unless user_signed_in?
   end
 
   def create_or_edit_text(object)
