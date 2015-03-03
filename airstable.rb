@@ -160,13 +160,26 @@ post '/stalls/:id/rental_requests' do
   else
     PP.pp rental_request
     PP.pp rental_request.errors
-    erb :"/stalls/rental_requests/new", \
-        locals: { title: "Request #{stall.title}", stall: stall, rental_request: rental_request }
+    erb :"/stalls/rental_requests/new",
+        locals: {
+          title: "Request #{stall.title}",
+          stall: stall,
+          rental_request: rental_request
+                }
   end
 end
 
-put '/stalls/:id/rental_requests/:id/edit' do
-  # approve or reject a request
+put '/stalls/:stall_id/rental_requests/:rental_request_id/edit' do
+  rental_request = RentalRequest.get(params[:rental_request_id])
+  rental_request.status = params['rental_request_response'].to_sym
+  rental_request.save
+
+  if rental_request.saved?
+    set_flash(:notice, "Request to #{rental_request.stall.title} #{rental_request.status}!")
+    redirect '/dashboard'
+  else
+    fail("Could not save response to #{rental_request.stall.title}!")
+  end
 end
 
 delete '/stalls/:id/rental_requests/:id' do

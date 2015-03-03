@@ -12,8 +12,8 @@ x. Guest may log in
 x. `User` may create a Stall
 x. `User` may see a list of available `Stall`s
 x. `User` may create a pending `RentalRequest` for a `Stall`
-1. `Stall` owner may see pending `RentalRequest`s
-1. `RentalRequest`s requester may see pending `RentalRequest`s
+x. `Stall` owner may see pending `RentalRequest`s
+x. `RentalRequest`s requester may see pending `RentalRequest`s
 1. `Stall` owner may deny `RentalRequest`s for their `Stall`
 1. `Stall` owner may approve `RentalRequest`s for their `Stall`
 1. `RentalRequest`s requester may see denied `RentalRequest`s
@@ -22,8 +22,8 @@ x. `User` may create a pending `RentalRequest` for a `Stall`
 
 ## STREEEETCH Features
 
-1. `User` may include a message in the `RentalRequest`
-1. `User` may include the date they want to use the `Stall` in the RentalRequest
+x. `User` may include a message in the `RentalRequest`
+x. `User` may include the date they want to use the `Stall` in the RentalRequest
 1. `User` may search stalls based upon dates available
 1. `User` may search stalls by location (Hint: use
    [graticule](https://github.com/collectiveidea/graticule)
@@ -52,7 +52,7 @@ is because it automates away the cost of the call center and radios and lowers
 the barriers to sharing the data to a few taps.
 
 As a web developer, your job is to figure out what is the right data, what is
-the right form fo rthat data, and who is the right people to have access to the
+the right form for that data, and who is the right people to have access to the
 data.
 
 ## Getting Started

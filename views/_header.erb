@@ -6,6 +6,7 @@
 </head>
 <body>
   <h2>Air Stable</h2>
+  <%= "Welcome, #{current_user.username}!<br/><br/><br/>" if current_user %>
 
   <% if object && object.errors.any? %>
     <div class='form-errors'>

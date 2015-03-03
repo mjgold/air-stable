@@ -5,16 +5,17 @@
 
 <h2>Incoming Requests</h2>
 
+<!-- CHANGE TO DISPLAY ACCEPTED AND DECLINED REQUESTS -->
 <% user.stalls.each do |stall| %>
   <% stall.rental_requests.each do |rental_request| %>
-    <%= erb :'/stalls/rental_requests/_pending_rental_request_form', locals: { rental_request: rental_request } %>
+    <%= erb :'/stalls/rental_requests/_pending_rental_request_form', locals: { user: user, rental_request: rental_request, status: :pending } %>
   <% end %>
 <% end %>
 
 <h2>Outgoing Requests</h2>
 
 <% user.rental_requests.each do |rental_request| %>
-  <%= erb :'/stalls/rental_requests/_pending_rental_request_form', locals: { rental_request: rental_request } %>
+  <%= erb :'/stalls/rental_requests/_pending_rental_request_form', locals: { user: user, rental_request: rental_request, status: :pending } %>
 <% end %>
 
 <%= erb :_footer %>

@@ -68,7 +68,7 @@ class RentalRequest
 
   property :id, Serial
   property :date, Date, required: true
-  property :status, Enum[:accepted, :pending, :declined], required: true
+  property :status, Enum[:accepted, :pending, :declined, :canceled], required: true
   property :message, Text
 
   ### WHY IS THIS ADDING :valid_date?=>[nil] TO ERRORS?
