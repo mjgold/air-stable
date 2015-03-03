@@ -1,5 +1,12 @@
 <%= erb :_header, locals: { title: title, object: user } %>
 
+<!-- WHY IS THIS BUTTON FLOATING OVER THE 'RENTAL REQUEST CREATED!' FLASH NOTICE? -->
 <button><a href='/stalls/new'>Add a Stall</a></button>
+
+<h2>Incoming Requests</h2>
+
+<% if user.rental_requests.any? %>
+  <% rental_requests.each do |rental_request| %>
+  
 
 <%= erb :_footer %>

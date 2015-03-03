@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'data_mapper'
+require 'dm-validations'
 
 # A User can be an owner or requester
 class User
@@ -20,11 +21,15 @@ class User
 
   attr_accessor :password_confirmation
   validates_confirmation_of :password
-  validates_length_of :password, min: 6
-  validates_length_of :password_confirmation, min: 6
+  validates_length_of :password_confirmation, min: 6, \
+                      if: :password_required?
 
   has n, :stalls, child_key: [:owner_id]
   has n, :rental_requests, child_key: [:requester_id]
+
+  def password_required?
+    self.new? || self.dirty?
+  end
 
   def valid_password?(unhashed_password)
     password == unhashed_password
@@ -62,9 +67,12 @@ class RentalRequest
   include DataMapper::Resource
 
   property :id, Serial
-  property :message, Text
-  property :date, Date
+  property :date, Date, required: true
   property :status, Enum[:accepted, :pending, :declined], required: true
+  property :message, Text
+
+  ### WHY IS THIS ADDING :valid_date?=>[nil] TO ERRORS?
+  validates_with_method :valid_date?
 
   belongs_to :stall, 'Stall',
              required: true
@@ -72,6 +80,20 @@ class RentalRequest
   belongs_to :requester, 'User',
              child_key: [:requester_id],
              required: true
+
+  def valid_date?
+    unless date.is_a? Date
+      errors.add(:general, 'Please enter a valid date.')
+      return false
+    end
+
+    unless date >= Date.today
+      errors.add(:general, 'Please enter a present or future date.')
+      return false
+    end
+
+    true
+  end
 end
 
 DataMapper.finalize

@@ -31,15 +31,6 @@ before do
   end
 end
 
-def get_flash(key)
-  session[:flash].delete(key) if session[:flash]
-end
-
-def set_flash(key, value)
-  session[:flash] ||= {}
-  session[:flash][key] = value
-end
-
 get '/' do
   user = User.new
   erb :index, locals: { user: user, title: 'Home' }
@@ -73,7 +64,7 @@ post '/users/new' do
     sign_in!(user)
     redirect('/dashboard')
   else
-    erb :'/users/new', locals: { user: user }
+    erb :'/users/new', locals: { user: user, title: 'Create an Account' }
   end
 end
 
@@ -86,12 +77,7 @@ post '/users/:id' do
 end
 
 get '/dashboard' do
-  user = current_user
-  if user
-    erb :'/dashboard', locals: { user: user, title: 'My Dashboard' }
-  else
-    redirect '/'
-  end
+  erb :'/dashboard', locals: { user: current_user, title: 'My Dashboard' }
 end
 
 get '/stalls' do
@@ -148,9 +134,11 @@ end
 
 get '/stalls/:id/rental_requests/new' do
   stall = Stall.get(params[:id])
+  rental_request = RentalRequest.new
 
   erb :'/stalls/rental_requests/new', \
-      locals: { title: "Request #{stall.title}", stall: stall }
+      locals: { title: "Request #{stall.title}", stall: stall, \
+                rental_request: rental_request }
 end
 
 post '/stalls/:id/rental_requests' do
@@ -163,9 +151,8 @@ post '/stalls/:id/rental_requests' do
   rental_request.requester = current_user
   rental_request.save
 
-  puts "Rental request valid?: #{rental_request.valid?}"
   if rental_request.saved?
-    flash_set(:notice, 'Rental request created!')
+    set_flash(:notice, 'Rental request created!')
     redirect '/dashboard'
   else
     PP.pp rental_request
@@ -184,6 +171,15 @@ delete '/stalls/:id/rental_requests/:id' do
 end
 
 helpers do
+  def get_flash(key)
+    session[:flash].delete(key) if session[:flash]
+  end
+
+  def set_flash(key, value)
+    session[:flash] ||= {}
+    session[:flash][key] = value
+  end
+
   def current_user
     # Return nil if no user is logged in
     return nil unless session.key?(:user_id)
@@ -210,10 +206,9 @@ helpers do
   end
 
   def authorize!
-    if !user_signed_in?
-      set_flash(:notice, 'Please login to access that page.')
-      redirect '/'
-    end
+    return if user_signed_in?
+    set_flash(:notice, 'Please login to access that page.')
+    redirect '/'
   end
 
   def create_or_edit_text(object)

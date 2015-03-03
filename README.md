@@ -9,9 +9,9 @@ Enter AirStable! AirStable lets people with extra stalls in their stable rent st
 
 x. Guest may register as a `User`
 x. Guest may log in
-x `User` may create a Stall
+x. `User` may create a Stall
 x. `User` may see a list of available `Stall`s
-1. `User` may create a pending `RentalRequest` for a `Stall`
+x. `User` may create a pending `RentalRequest` for a `Stall`
 1. `Stall` owner may see pending `RentalRequest`s
 1. `RentalRequest`s requester may see pending `RentalRequest`s
 1. `Stall` owner may deny `RentalRequest`s for their `Stall`
