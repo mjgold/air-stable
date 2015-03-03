@@ -136,9 +136,12 @@ get '/stalls/:id/rental_requests/new' do
   stall = Stall.get(params[:id])
   rental_request = RentalRequest.new
 
-  erb :'/stalls/rental_requests/new', \
-      locals: { title: "Request #{stall.title}", stall: stall, \
-                rental_request: rental_request }
+  erb :'/stalls/rental_requests/new',
+      locals: {
+        title: "Request #{stall.title}",
+        stall: stall,
+        rental_request: rental_request
+              }
 end
 
 post '/stalls/:id/rental_requests' do
@@ -230,5 +233,13 @@ helpers do
 
   def city_state_zip(stall)
     "#{stall.city}, #{stall.state} #{stall.zip}"
+  end
+
+  def rental_request_stall_and_date(rental_request)
+    "#{rental_request.stall.title} - #{rental_request.date}"
+  end
+
+  def username_and_email(user)
+    "<a href='mailto: #{user.email}'>#{user.username} (#{user.email})</a>"
   end
 end
