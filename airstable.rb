@@ -1,5 +1,3 @@
-### More elegant way to do authorization?
-
 require 'sinatra'
 require './setup'
 require './models'

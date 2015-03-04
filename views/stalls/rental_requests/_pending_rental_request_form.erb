@@ -9,10 +9,9 @@
         <button type='submit' name='rental_request_response' value='declined'>Decline</button>
       <% else %>
         <p/>To: <%= username_and_email(rental_request.stall.owner) %>
-        <button type='submit' name='rental_request_response' value='canceled'>Cancel</button>
+        <p/><button type='submit' name='rental_request_response' value='canceled'>Cancel</button>
       <% end %>
 
       <input type='hidden' name='_method' value='put'>
   </form>
 <% end %>
-<br/><br/>

@@ -1,14 +1,17 @@
 <%= erb :_header, locals: { object: user, title: title } %>
 
-<p>
-<form action='/sessions' method='post'>
-  <input type='text' name='email' value='<%= user[:email] %>' placeholder='Email address'>
-  <p/>
-  <input type='text' name='password' placeholder='Password'>
-  <p/>
-  <button type='submit'>Log in</button>
-</form>
-<p>
-Not a member? <a href='/users/new'>Register now!</a>
+
+<% if !user_signed_in? %>
+  <p>
+  <form action='/sessions' method='post'>
+    <input type='text' name='email' value='<%= user[:email] %>' placeholder='Email address'>
+    <p/>
+    <input type='text' name='password' placeholder='Password'>
+    <p/>
+    <button type='submit'>Log in</button>
+  </form>
+  <p>
+  Not a member? <a href='/users/new'>Register now!</a>
+<% end %>
 
 <%= erb :_footer, locals: { external_page: true } %>

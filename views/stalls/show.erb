@@ -3,8 +3,10 @@
 <%= stall_info(stall) %>
 
 <p><%= stall.description %>
-
-<p><button><a href='/stalls/<%="#{stall.id}"%>/rental_requests/new'>Request Rental</a></button>
+<p>  
+<% if stall.owner != current_user %>
+  <button><a href='/stalls/<%="#{stall.id}"%>/rental_requests/new'>Request Rental</a></button>
+<% end %>
   <button><a href='<%="/stalls/#{stall.id}/edit" %>'>Edit Stall</a></button>
 
 <%= erb :_footer %>
