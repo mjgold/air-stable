@@ -1,4 +1,4 @@
-<% if rental_request.status == :pending %>
+<% if rental_request.status == status %>
   <form action='/stalls/<%="#{rental_request.stall.id}"%>/rental_requests/<%="#{rental_request.id}"%>/edit' method='post'>
     <%= rental_request_stall_and_date(rental_request) %>
     <p/><%= rental_request.message %>
@@ -7,9 +7,12 @@
         <p/>From: <%= username_and_email(rental_request.requester) %>
         <p/><button type='submit' name='rental_request_response' value='accepted'>Accept</button>
         <button type='submit' name='rental_request_response' value='declined'>Decline</button>
+
       <% else %>
         <p/>To: <%= username_and_email(rental_request.stall.owner) %>
-        <p/><button type='submit' name='rental_request_response' value='canceled'>Cancel</button>
+        <% if rental_request.status == :accepted || rental_request.status == :pending %>
+          <p/><button type='submit' name='rental_request_response' value='canceled'>Cancel</button>
+        <% end %>
       <% end %>
 
       <input type='hidden' name='_method' value='put'>

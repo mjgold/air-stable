@@ -14,10 +14,10 @@ x. `User` may see a list of available `Stall`s
 x. `User` may create a pending `RentalRequest` for a `Stall`
 x. `Stall` owner may see pending `RentalRequest`s
 x. `RentalRequest`s requester may see pending `RentalRequest`s
-1. `Stall` owner may deny `RentalRequest`s for their `Stall`
-1. `Stall` owner may approve `RentalRequest`s for their `Stall`
-1. `RentalRequest`s requester may see denied `RentalRequest`s
-1. `Stall` renter may see allowed `RentalRequest`s
+x. `Stall` owner may deny `RentalRequest`s for their `Stall`
+x. `Stall` owner may approve `RentalRequest`s for their `Stall`
+x. `RentalRequest`s requester may see denied `RentalRequest`s
+x. `Stall` renter may see allowed `RentalRequest`s
 
 
 ## STREEEETCH Features
